@@ -1,0 +1,155 @@
+-- services ig
+local TextChatService = game:GetService("TextChatService")
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+
+local function sendMessage(message)
+    local textChannel = TextChatService:WaitForChild("TextChannels"):FindFirstChild("RBXGeneral")
+    if textChannel then
+        textChannel:SendAsync(message)
+    end
+end
+
+-- these the replacements
+local replacements = {
+    a = "α̵̩",  b = "Ь͔̓",  c = "ς̬́",  d = "ԃ̩̏",  e = "є̱̕",  
+f = "F̵̩",  g = "ḡ̰",  h = "ḧ̠",  i = "і̠̚",  j = "נ̩̍",  
+k = "к̬̕",  l = "ӏ̩́",  m = "м̯̓",  n = "ŋ̥́",  o = "σ̱̀",  
+p = "ρ̯̈",  q = "q̱̚",  r = "г̦̕",  s = "ş̦̑",  t = "т̯̓",  
+u = "υ̰̚",  v = "ν̤̀",  w = "ώ̟",  x = "χ̩̓",  y = "γ̩̈",  
+z = "ž̦́"
+}
+
+local function replaceLetters(message)
+    local modifiedMessage = message
+    for letter, replacement in pairs(replacements) do
+        modifiedMessage = modifiedMessage:gsub(letter, replacement)
+    end
+    return modifiedMessage
+end
+
+local function createChatbox()
+    -- Remove any existing chatbox if it exists
+    local existingChatbox = LocalPlayer.PlayerGui:FindFirstChild("CustomChatbox")
+    if existingChatbox then
+        existingChatbox:Destroy()
+    end
+
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "CustomChatbox"
+    ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+    -- Create a Frame to contain the TextBox and Send Button
+    local Frame = Instance.new("Frame")
+    Frame.Parent = ScreenGui
+    Frame.Size = UDim2.new(0, 360, 0, 100)
+    Frame.Position = UDim2.new(0.5, -175, 0.8, -40)
+    Frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    Frame.BorderSizePixel = 0
+
+    local UICornerFrame = Instance.new("UICorner")
+    UICornerFrame.CornerRadius = UDim.new(0, 10)
+    UICornerFrame.Parent = Frame
+
+    local dragging = false
+    local dragInput, mousePos, framePos
+
+    Frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            mousePos = input.Position
+            framePos = Frame.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    Frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - mousePos
+            local tween = TweenService:Create(Frame, TweenInfo.new(0.2), {
+                Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+            })
+            tween:Play()
+        end
+    end)
+
+    local Label = Instance.new("TextLabel")
+    Label.Parent = Frame
+    Label.Size = UDim2.new(0, 330, 0, 20)
+    Label.Position = UDim2.new(0.5, -165, 0, 5)
+    Label.BackgroundTransparency = 1
+    Label.Text = "NiggaCreation Auto Bypasser"
+    Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Label.Font = Enum.Font.GothamBold
+    Label.TextSize = 16
+
+    local TextBox = Instance.new("TextBox")
+    TextBox.Parent = Frame
+    TextBox.Size = UDim2.new(0, 230, 0, 30)
+    TextBox.Position = UDim2.new(0, 10, 0, 45)
+    TextBox.PlaceholderText = "Type your message here..."
+    TextBox.Text = ""
+    TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    TextBox.BorderSizePixel = 0
+
+    local UICornerTextBox = Instance.new("UICorner")
+    UICornerTextBox.CornerRadius = UDim.new(0, 10)
+    UICornerTextBox.Parent = TextBox
+
+    TextBox.Font = Enum.Font.GothamBold
+    TextBox.TextSize = 16
+
+    local SendButton = Instance.new("TextButton")
+    SendButton.Parent = Frame
+    SendButton.Size = UDim2.new(0, 100, 0, 30)
+    SendButton.Position = UDim2.new(0, 250, 0, 45)
+    SendButton.Text = "Send"
+    SendButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SendButton.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+    SendButton.BorderSizePixel = 0
+
+    local UICornerButton = Instance.new("UICorner")
+    UICornerButton.CornerRadius = UDim.new(0, 10)
+    UICornerButton.Parent = SendButton
+
+    SendButton.Font = Enum.Font.FredokaOne
+    SendButton.TextSize = 18
+
+    local function handleSendMessage()
+        local message = TextBox.Text
+        if message and message ~= "" then
+
+            local modifiedMessage = replaceLetters(message)
+
+            sendMessage(modifiedMessage)
+
+            TextBox.Text = ""
+        end
+    end
+
+    SendButton.MouseButton1Click:Connect(handleSendMessage)
+
+    TextBox.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            handleSendMessage()
+        end
+    end)
+end
+
+LocalPlayer.CharacterAdded:Connect(createChatbox)
+
+createChatbox()
