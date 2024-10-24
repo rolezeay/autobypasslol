@@ -31,7 +31,7 @@ local function replaceLetters(message)
 end
 
 local function createChatbox()
-    -- Remove any existing chatbox if it exists
+
     local existingChatbox = LocalPlayer.PlayerGui:FindFirstChild("CustomChatbox")
     if existingChatbox then
         existingChatbox:Destroy()
@@ -41,12 +41,11 @@ local function createChatbox()
     ScreenGui.Name = "CustomChatbox"
     ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
-    -- Create a Frame to contain the TextBox and Send Button
     local Frame = Instance.new("Frame")
     Frame.Parent = ScreenGui
     Frame.Size = UDim2.new(0, 360, 0, 100)
     Frame.Position = UDim2.new(0.5, -175, 0.8, -40)
-    Frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Frame.BorderSizePixel = 0
 
     local UICornerFrame = Instance.new("UICorner")
@@ -89,7 +88,7 @@ local function createChatbox()
     local Label = Instance.new("TextLabel")
     Label.Parent = Frame
     Label.Size = UDim2.new(0, 330, 0, 20)
-    Label.Position = UDim2.new(0.5, -165, 0, 5)
+    Label.Position = UDim2.new(0.5, -165, 0.1, 5)
     Label.BackgroundTransparency = 1
     Label.Text = "NiggaCreation Auto Bypasser"
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -103,12 +102,18 @@ local function createChatbox()
     TextBox.PlaceholderText = "Type your message here..."
     TextBox.Text = ""
     TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    TextBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     TextBox.BorderSizePixel = 0
 
     local UICornerTextBox = Instance.new("UICorner")
     UICornerTextBox.CornerRadius = UDim.new(0, 10)
     UICornerTextBox.Parent = TextBox
+
+    local TextBoxOutline = Instance.new("UIStroke")
+    TextBoxOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    TextBoxOutline.Color = Color3.fromRGB(219, 102, 24)
+    TextBoxOutline.Thickness = 2
+    TextBoxOutline.Parent = TextBox
 
     TextBox.Font = Enum.Font.GothamBold
     TextBox.TextSize = 16
@@ -119,12 +124,18 @@ local function createChatbox()
     SendButton.Position = UDim2.new(0, 250, 0, 45)
     SendButton.Text = "Send"
     SendButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SendButton.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+    SendButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     SendButton.BorderSizePixel = 0
 
     local UICornerButton = Instance.new("UICorner")
     UICornerButton.CornerRadius = UDim.new(0, 10)
     UICornerButton.Parent = SendButton
+
+    local SendButtonOutline = Instance.new("UIStroke")
+    SendButtonOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    SendButtonOutline.Color = Color3.fromRGB(219, 102, 24)
+    SendButtonOutline.Thickness = 2
+    SendButtonOutline.Parent = SendButton
 
     SendButton.Font = Enum.Font.FredokaOne
     SendButton.TextSize = 18
@@ -132,11 +143,8 @@ local function createChatbox()
     local function handleSendMessage()
         local message = TextBox.Text
         if message and message ~= "" then
-
             local modifiedMessage = replaceLetters(message)
-
             sendMessage(modifiedMessage)
-
             TextBox.Text = ""
         end
     end
