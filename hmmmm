@@ -5,6 +5,9 @@ local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 
+local spamActive = false
+local spamInterval = 5 
+
 local function sendMessage(message)
     local textChannel = TextChatService:WaitForChild("TextChannels"):FindFirstChild("RBXGeneral")
     if textChannel then
@@ -12,14 +15,14 @@ local function sendMessage(message)
     end
 end
 
--- these the replacements
+-- these are the replacements
 local replacements = {
     a = "α̵̩",  b = "Ь͔̓",  c = "ς̬́",  d = "ԃ̩̏",  e = "є̱̕",  
-f = "Ḟ̇",  g = "ḡ̰",  h = "ḧ̠",  i = "і̠̚",  j = "נ̩̍",  
-k = "к̬̕",  l = "ӏ̩́",  m = "м̯̓",  n = "ŋ̥́",  o = "σ̱̀",  
-p = "ρ̯̈",  q = "q̱̚",  r = "г̦̕",  s = "ş̦̑",  t = "т̯̓",  
-u = "υ̰̚",  v = "ν̤̀",  w = "ώ̟",  x = "χ̩̓",  y = "γ̩̈",  
-z = "ž̦́"
+    f = "Ḟ̇",  g = "ḡ̰",  h = "ḧ̠",  i = "і̠̚",  j = "נ̩̍",  
+    k = "к̬̕",  l = "ӏ̩́",  m = "м̯̓",  n = "ŋ̥́",  o = "σ̱̀",  
+    p = "ρ̯̈",  q = "q̱̚",  r = "г̦̕",  s = "ş̦̑",  t = "т̯̓",  
+    u = "υ̰̚",  v = "ν̤̀",  w = "ώ̟",  x = "χ̩̓",  y = "γ̩̈",  
+    z = "ž̦́"
 }
 
 local function replaceLetters(message)
@@ -43,7 +46,7 @@ local function createChatbox()
 
     local Frame = Instance.new("Frame")
     Frame.Parent = ScreenGui
-    Frame.Size = UDim2.new(0, 360, 0, 100)
+    Frame.Size = UDim2.new(0, 360, 0, 120)
     Frame.Position = UDim2.new(0.5, -175, 0.8, -40)
     Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Frame.BorderSizePixel = 0
@@ -88,12 +91,12 @@ local function createChatbox()
     local Label = Instance.new("TextLabel")
     Label.Parent = Frame
     Label.Size = UDim2.new(0, 330, 0, 20)
-    Label.Position = UDim2.new(0.5, -165, 0.1, 5)
+    Label.Position = UDim2.new(0.5, -165, 0.1, 1)
     Label.BackgroundTransparency = 1
     Label.Text = "NiggaCreation Auto Bypasser"
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
     Label.Font = Enum.Font.GothamBold
-    Label.TextSize = 16
+    Label.TextSize = 18
 
     local TextBox = Instance.new("TextBox")
     TextBox.Parent = Frame
@@ -140,6 +143,33 @@ local function createChatbox()
     SendButton.Font = Enum.Font.FredokaOne
     SendButton.TextSize = 18
 
+local SpamLabel = Instance.new("TextLabel")
+SpamLabel.Parent = Frame
+SpamLabel.Size = UDim2.new(0, 150, 0, 30)
+SpamLabel.Position = UDim2.new(0, 10, 0, 80)
+SpamLabel.BackgroundTransparency = 1
+SpamLabel.Text = "Fill Chat"
+SpamLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+SpamLabel.Font = Enum.Font.GothamBold
+SpamLabel.TextSize = 16
+
+local SpamCheckbox = Instance.new("Frame")
+SpamCheckbox.Parent = Frame
+SpamCheckbox.Size = UDim2.new(0, 20, 0, 20)
+SpamCheckbox.Position = UDim2.new(0, 135, 0, 85)
+SpamCheckbox.BackgroundColor3 = Color3.fromRGB(219, 0, 0)
+SpamCheckbox.BorderSizePixel = 0
+
+local UICornerCheckbox = Instance.new("UICorner")
+UICornerCheckbox.CornerRadius = UDim.new(0, 5)
+UICornerCheckbox.Parent = SpamCheckbox
+
+    local CheckboxButton = Instance.new("TextButton")
+    CheckboxButton.Parent = SpamCheckbox
+    CheckboxButton.Size = UDim2.new(1, 0, 1, 0)
+    CheckboxButton.BackgroundTransparency = 1
+    CheckboxButton.Text = ""
+
     local function handleSendMessage()
         local message = TextBox.Text
         if message and message ~= "" then
@@ -156,8 +186,40 @@ local function createChatbox()
             handleSendMessage()
         end
     end)
-end
 
-LocalPlayer.CharacterAdded:Connect(createChatbox)
+    local spamLoop
+
+    local function toggleSpam()
+        spamActive = not spamActive
+        if spamActive then
+            SpamCheckbox.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+            local lastMessage = TextBox.Text
+            spamLoop = game:GetService("RunService").Stepped:Connect(function()
+                if spamActive and lastMessage then
+                    sendMessage(replaceLetters(lastMessage))
+                    wait(spamInterval)
+                else
+                    spamLoop:Disconnect()
+                end
+            end)
+        else
+            SpamCheckbox.BackgroundColor3 = Color3.fromRGB(219, 0, 0)
+            if spamLoop then
+                spamLoop:Disconnect()
+                spamLoop = nil
+            end
+        end
+    end
+
+    CheckboxButton.MouseButton1Click:Connect(toggleSpam)
+
+    local ImageLabel = Instance.new("ImageLabel")
+    ImageLabel.Parent = Frame
+    ImageLabel.Size = UDim2.new(0, 50, 0, 30)
+    ImageLabel.Position = UDim2.new(1, -60, 0.6, 13)
+    ImageLabel.BackgroundTransparency = 1
+    ImageLabel.Image = "rbxassetid://126133429358591"
+
+end
 
 createChatbox()
