@@ -34,15 +34,15 @@ local function replaceLetters(message)
 end
 
 local function createChatbox()
-
-    local existingChatbox = LocalPlayer.PlayerGui:FindFirstChild("CustomChatbox")
+    local existingChatbox = game.CoreGui:FindFirstChild("CustomChatbox")
     if existingChatbox then
         existingChatbox:Destroy()
     end
 
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "CustomChatbox"
-    ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.Parent = game:GetService("CoreGui")
+    ScreenGui.DisplayOrder = 10
 
     local Frame = Instance.new("Frame")
     Frame.Parent = ScreenGui
