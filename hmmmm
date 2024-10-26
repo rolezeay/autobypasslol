@@ -93,7 +93,7 @@ local function createChatbox()
     Label.Size = UDim2.new(0, 330, 0, 20)
     Label.Position = UDim2.new(0.5, -165, 0.1, 1)
     Label.BackgroundTransparency = 1
-    Label.Text = "NiggaCreation Auto Bypasser"
+    Label.Text = "NovaLink Auto Bypasser"
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
     Label.Font = Enum.Font.GothamBold
     Label.TextSize = 18
