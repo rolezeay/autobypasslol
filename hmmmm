@@ -48,7 +48,7 @@ local function createChatbox()
     Frame.Parent = ScreenGui
     Frame.Size = UDim2.new(0, 360, 0, 120)
     Frame.Position = UDim2.new(0.5, -175, 0.8, -40)
-    Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Frame.BackgroundColor3 = Color3.fromRGB(12, 20, 28)
     Frame.BorderSizePixel = 0
 
     local UICornerFrame = Instance.new("UICorner")
@@ -105,7 +105,7 @@ local function createChatbox()
     TextBox.PlaceholderText = "Type your message here..."
     TextBox.Text = ""
     TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    TextBox.BackgroundColor3 = Color3.fromRGB(12, 20, 28)
     TextBox.BorderSizePixel = 0
 
     local UICornerTextBox = Instance.new("UICorner")
@@ -114,7 +114,7 @@ local function createChatbox()
 
     local TextBoxOutline = Instance.new("UIStroke")
     TextBoxOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    TextBoxOutline.Color = Color3.fromRGB(219, 102, 24)
+    TextBoxOutline.Color = Color3.fromRGB(92, 124, 156)
     TextBoxOutline.Thickness = 2
     TextBoxOutline.Parent = TextBox
 
@@ -127,7 +127,7 @@ local function createChatbox()
     SendButton.Position = UDim2.new(0, 250, 0, 45)
     SendButton.Text = "Send"
     SendButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SendButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    SendButton.BackgroundColor3 = Color3.fromRGB(12, 20, 28)
     SendButton.BorderSizePixel = 0
 
     local UICornerButton = Instance.new("UICorner")
@@ -136,7 +136,7 @@ local function createChatbox()
 
     local SendButtonOutline = Instance.new("UIStroke")
     SendButtonOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    SendButtonOutline.Color = Color3.fromRGB(219, 102, 24)
+    SendButtonOutline.Color = Color3.fromRGB(92, 124, 156)
     SendButtonOutline.Thickness = 2
     SendButtonOutline.Parent = SendButton
 
